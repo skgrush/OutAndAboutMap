@@ -13,6 +13,8 @@
 		7E43C64E2570A0FC00170C17 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E43C64D2570A0FC00170C17 /* Preview Assets.xcassets */; };
 		7E43C6592570A0FD00170C17 /* OutAndAboutMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C6582570A0FD00170C17 /* OutAndAboutMapTests.swift */; };
 		7E43C6642570A0FD00170C17 /* OutAndAboutMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C6632570A0FD00170C17 /* OutAndAboutMapUITests.swift */; };
+		7E43C6762570A53C00170C17 /* MainMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C6752570A53C00170C17 /* MainMapModel.swift */; };
+		7E43C6802570A56300170C17 /* MainMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C67F2570A56300170C17 /* MainMapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		7E43C65F2570A0FD00170C17 /* OutAndAboutMapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OutAndAboutMapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E43C6632570A0FD00170C17 /* OutAndAboutMapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutAndAboutMapUITests.swift; sourceTree = "<group>"; };
 		7E43C6652570A0FD00170C17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E43C6752570A53C00170C17 /* MainMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapModel.swift; sourceTree = "<group>"; };
+		7E43C67F2570A56300170C17 /* MainMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,8 @@
 		7E43C6452570A0F800170C17 /* OutAndAboutMap */ = {
 			isa = PBXGroup;
 			children = (
+				7E43C67D2570A54700170C17 /* Views */,
+				7E43C6742570A52A00170C17 /* Models */,
 				7E43C6462570A0F800170C17 /* OutAndAboutMapApp.swift */,
 				7E43C6482570A0F800170C17 /* ContentView.swift */,
 				7E43C64A2570A0FC00170C17 /* Assets.xcassets */,
@@ -128,6 +134,30 @@
 				7E43C6652570A0FD00170C17 /* Info.plist */,
 			);
 			path = OutAndAboutMapUITests;
+			sourceTree = "<group>";
+		};
+		7E43C6742570A52A00170C17 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7E43C6752570A53C00170C17 /* MainMapModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7E43C67D2570A54700170C17 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7E43C67E2570A55300170C17 /* MainMap */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7E43C67E2570A55300170C17 /* MainMap */ = {
+			isa = PBXGroup;
+			children = (
+				7E43C67F2570A56300170C17 /* MainMapView.swift */,
+			);
+			path = MainMap;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +290,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E43C6492570A0F800170C17 /* ContentView.swift in Sources */,
+				7E43C6762570A53C00170C17 /* MainMapModel.swift in Sources */,
+				7E43C6802570A56300170C17 /* MainMapView.swift in Sources */,
 				7E43C6472570A0F800170C17 /* OutAndAboutMapApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,6 +459,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.grush.OutAndAboutMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -449,6 +482,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.grush.OutAndAboutMap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
