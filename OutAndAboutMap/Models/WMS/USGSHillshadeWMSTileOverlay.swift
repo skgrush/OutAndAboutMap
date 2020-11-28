@@ -9,8 +9,10 @@ import Foundation
 import MapKit
 
 enum WMSError : Error {
-    case cacheLoad(bbox: String, inner: Error)
-
+    case cacheIO(bbox: String, inner: Error)
+    case xmlResponse(bbox: String, err: String)
+    case errResponse(bbox: String, inner: Error)
+    case unknown(bbox: String, message: String)
 }
 
 /**
@@ -39,12 +41,15 @@ final class USGSHillshadeWMSTileOverlay : MKTileOverlay {
     private static let STYLE = "default"
     private static let FORMAT = "image/png"
     private static let CRS = "EPSG:3857"
-    private static let CACHE_DIR = "tile-cache"
+    private static let CACHE_DIR = "hillshade-wms-tile-cache"
 
     let baseSrcURL: URL
 
     private let fm = FileManager.default
-    private let cacheURL: URL
+    private let cacheDirURL: URL
+
+    private var cacheHits = 0
+    private var cacheMisses = 0
 
     init() {
         var components = URLComponents()
@@ -65,16 +70,76 @@ final class USGSHillshadeWMSTileOverlay : MKTileOverlay {
         ]
 
         self.baseSrcURL = components.url!
-        self.cacheURL = Self.ensureCacheURL()
+        self.cacheDirURL = Self.ensureCacheURL()
 
         super.init(urlTemplate: nil)
 
-        self.maximumZ = 17
+        self.maximumZ = 15
     }
 
-    override func url(forTilePath path: MKTileOverlayPath) -> URL {
+    override func loadTile(
+        at path: MKTileOverlayPath,
+        result: @escaping (Data?, Error?) -> Void
+    ) {
         let bbox = generateBbox(from: path)
-        return baseSrcURL.appendingPathComponent(bbox)
+
+        let cacheURL = cacheDirURL.appendingPathComponent(bbox)
+
+        if fm.fileExists(atPath: cacheURL.path) {
+            do {
+                let data = try loadFromCache(url: cacheURL)
+                result(data, nil)
+                cacheHits += 1
+            } catch {
+                result(nil, WMSError.cacheIO(bbox: bbox, inner: error))
+            }
+        } else {
+            cacheMisses += 1
+            let request = URL(string: "\(baseSrcURL)&\(bbox)")!
+            let downloadTask = URLSession.shared.dataTask(with: request) {
+                (data, response, error)
+                in
+
+                if let err = self.isError(
+                    bbox: bbox, data: data, response: response, err: error
+                ) {
+                    result(nil, err)
+                } else {
+                    do {
+                        try data!.write(to: cacheURL)
+                        result(data, nil)
+                    } catch {
+                        result(nil, WMSError.cacheIO(bbox: bbox, inner: error))
+                    }
+                }
+            }
+
+            downloadTask.resume()
+        }
+    }
+
+    private func loadFromCache(url: URL) throws -> Data {
+        return try Data(contentsOf: url, options: .alwaysMapped)
+    }
+
+    private func isError(
+        bbox: String, data: Data?, response: URLResponse?, err: Error?
+    ) -> WMSError? {
+        let mimeType = response?.mimeType?.lowercased()
+        if err != nil {
+            return WMSError.errResponse(bbox: bbox, inner: err!)
+        } else if mimeType?.hasSuffix("xml") == true {
+            if let responseData = String(data: data!, encoding: .utf8) {
+                return WMSError.xmlResponse(bbox: bbox, err: responseData)
+            } else {
+                return WMSError.unknown(bbox: bbox, message: "XML but no body")
+            }
+        } else if mimeType != Self.FORMAT {
+            return WMSError.unknown(
+                bbox: bbox, message: "Bad mime \(String(describing: mimeType))"
+            )
+        }
+        return nil
     }
 
     private func generateBbox(from path: MKTileOverlayPath) -> String {
@@ -104,9 +169,12 @@ final class USGSHillshadeWMSTileOverlay : MKTileOverlay {
 
     private static func ensureCacheURL() -> URL {
         let fm = FileManager.default
-        let cache = fm
-            .urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent(CACHE_DIR, isDirectory: true)
+        let cache = try! fm.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            ).appendingPathComponent(CACHE_DIR, isDirectory: true)
 
         try! fm.createDirectory(at: cache, withIntermediateDirectories: true)
 
