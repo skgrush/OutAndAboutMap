@@ -13,25 +13,26 @@ struct MainMapView : UIViewRepresentable {
     @ObservedObject
     var model = MainMapModel()
 
-    @State
-    var overlayLoaded = false
-
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView(frame: .zero)
         mapView.delegate = context.coordinator
+        context.coordinator.didLoad(mapView: mapView)
+
         mapView.showsUserLocation = true
 
+        mapView.region = model.region
+        mapView.setUserTrackingMode(.followWithHeading, animated: true)
+
         mapView.translatesAutoresizingMaskIntoConstraints = false
+
+        let longTapGesture = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.longTap))
+        mapView.addGestureRecognizer(longTapGesture)
 
         return mapView
     }
 
     func updateUIView(_ mapView: MKMapView, context: Context) {
-        if !overlayLoaded {
-            mapView.addOverlay(model.tileOverlay)
-        }
-
-        mapView.translatesAutoresizingMaskIntoConstraints = false
+        context.coordinator.didUpdate(mapView: mapView)
     }
 
     func makeCoordinator() -> Coordinator {
