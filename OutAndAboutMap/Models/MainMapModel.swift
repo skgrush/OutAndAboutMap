@@ -28,4 +28,11 @@ final class MainMapModel : ObservableObject {
 
     @Published
     var trackingMode = MapUserTrackingMode.none
+
+    @Published
+    var tileOverlay: MKTileOverlay
+
+    init() {
+        self.tileOverlay = USGSHillshadeWMSTileOverlay()
+    }
 }

@@ -8,17 +8,34 @@
 import SwiftUI
 import MapKit
 
-struct MainMapView: View {
+struct MainMapView : UIViewRepresentable {
+
     @ObservedObject
     var model = MainMapModel()
 
-    var body: some View {
-        Map(
-            coordinateRegion: $model.region,
-            interactionModes: .all,
-            showsUserLocation: true,
-            userTrackingMode: $model.trackingMode
-        )
+    @State
+    var overlayLoaded = false
+
+    func makeUIView(context: Context) -> MKMapView {
+        let mapView = MKMapView(frame: .zero)
+        mapView.delegate = context.coordinator
+        mapView.showsUserLocation = true
+
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+
+        return mapView
+    }
+
+    func updateUIView(_ mapView: MKMapView, context: Context) {
+        if !overlayLoaded {
+            mapView.addOverlay(model.tileOverlay)
+        }
+
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
 }
 
