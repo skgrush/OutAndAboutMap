@@ -28,6 +28,7 @@
 		7E43C74A2571C65A00170C17 /* USGSHillshadeWMTSTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C7492571C65A00170C17 /* USGSHillshadeWMTSTileOverlay.swift */; };
 		7E43C7582571E51700170C17 /* USGSHillshadeWMSTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C7572571E51700170C17 /* USGSHillshadeWMSTileOverlay.swift */; };
 		7E43C760257217EF00170C17 /* MainMapView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C75F257217EE00170C17 /* MainMapView+Coordinator.swift */; };
+		7E43C77F257482D200170C17 /* WMSTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43C77E257482D200170C17 /* WMSTileOverlay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +118,7 @@
 		7E43C7492571C65A00170C17 /* USGSHillshadeWMTSTileOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USGSHillshadeWMTSTileOverlay.swift; sourceTree = "<group>"; };
 		7E43C7572571E51700170C17 /* USGSHillshadeWMSTileOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USGSHillshadeWMSTileOverlay.swift; sourceTree = "<group>"; };
 		7E43C75F257217EE00170C17 /* MainMapView+Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainMapView+Coordinator.swift"; sourceTree = "<group>"; };
+		7E43C77E257482D200170C17 /* WMSTileOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMSTileOverlay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +289,7 @@
 			isa = PBXGroup;
 			children = (
 				7E43C7572571E51700170C17 /* USGSHillshadeWMSTileOverlay.swift */,
+				7E43C77E257482D200170C17 /* WMSTileOverlay.swift */,
 			);
 			path = WMS;
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				7E43C6802570A56300170C17 /* MainMapView.swift in Sources */,
 				7E43C760257217EF00170C17 /* MainMapView+Coordinator.swift in Sources */,
 				7E43C6472570A0F800170C17 /* OutAndAboutMapApp.swift in Sources */,
+				7E43C77F257482D200170C17 /* WMSTileOverlay.swift in Sources */,
 				7E43C7582571E51700170C17 /* USGSHillshadeWMSTileOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
